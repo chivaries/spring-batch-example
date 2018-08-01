@@ -75,7 +75,7 @@ public class QuartzConfiguration {
     }
 
     /**
-     * Scheduler 전체를 관리하는 manager
+     * Scheduling 전체를 관리하는 manager
      */
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean() {
