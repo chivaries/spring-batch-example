@@ -108,19 +108,4 @@ public class AutowiringQuartzConfiguration {
         trigger.setCronExpression("0 * * 1/1 * ? *");
         return trigger;
     }
-
-//    @Bean
-//    public SimpleTriggerFactoryBean trigger(JobDetail jobDetail) {
-//
-//        SimpleTriggerFactoryBean trigger = new SimpleTriggerFactoryBean();
-//        trigger.setJobDetail(jobDetail);
-//
-//        int frequencyInSec = 10;
-//        log.info("Configuring trigger to fire every {} seconds", frequencyInSec);
-//
-//        trigger.setRepeatInterval(frequencyInSec * 1000);
-//        trigger.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
-//        trigger.setName("Qrtz_Trigger");
-//        return trigger;
-//    }
 }
