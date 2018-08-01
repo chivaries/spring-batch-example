@@ -1,0 +1,15 @@
+using:
+  spring:
+    autowiring: true
+debug: true
+spring:
+  datasource:
+    url: jdbc:h2:file:./test
+    username: sa
+    password:
+  batch:
+    job:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
