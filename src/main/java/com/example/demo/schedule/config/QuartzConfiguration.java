@@ -1,5 +1,6 @@
-package com.example.demo.hello.schedule;
+package com.example.demo.schedule.config;
 
+import com.example.demo.schedule.QuartzJobLauncher;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
@@ -16,11 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@ConditionalOnExpression("'${using.spring.autowiring}'=='false'")
+@ConditionalOnExpression("'${using.spring.autowiring}'=='none'")
 public class QuartzConfiguration {
+    //Spring Batch 의 jobLauncher 주입
     @Autowired
     private JobLauncher jobLauncher;
 
+    //Spring Batch 의 jobLocator 주입
     @Autowired
     private JobLocator jobLocator;
 

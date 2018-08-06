@@ -1,4 +1,4 @@
-package com.example.demo.hello.schedule.config;
+package com.example.demo.schedule.config;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.BeansException;
@@ -23,7 +23,7 @@ public final class AutoWiringSpringBeanJobFactory extends SpringBeanJobFactory i
     @Override
     protected Object createJobInstance(final TriggerFiredBundle bundle) throws Exception {
         final Object job = super.createJobInstance(bundle);
-        // job 을 autowire 가능한 bean 으로 등록
+        // job class 를 autowire 가능한 bean 으로 등록
         beanFactory.autowireBean(job);
         return job;
     }

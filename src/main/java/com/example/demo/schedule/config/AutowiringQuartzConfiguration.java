@@ -1,10 +1,11 @@
-package com.example.demo.hello.schedule;
+package com.example.demo.schedule.config;
 
-import com.example.demo.hello.schedule.config.AutoWiringSpringBeanJobFactory;
+import com.example.demo.schedule.QuartzJobLauncher;
+import com.example.demo.schedule.config.AutoWiringSpringBeanJobFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobDetail;
-import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.quartz.spi.JobFactory;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.support.JobRegistryBeanPostProcessor;
@@ -22,12 +23,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@ConditionalOnExpression("'${using.spring.autowiring}'=='true'")
+@ConditionalOnExpression("'${using.spring.autowiring}'=='half'")
 @Slf4j
 public class AutowiringQuartzConfiguration {
+
+    //Spring Batch 의 jobLauncher 주입
     @Autowired
     private JobLauncher jobLauncher;
 
+    //Spring Batch 의 jobLocator 주입
     @Autowired
     private JobLocator jobLocator;
 
@@ -40,7 +44,7 @@ public class AutowiringQuartzConfiguration {
     }
 
     /*
-     * JobRegistry 에 Job 을 자동으로 등록하기 위한 설정.
+     * JobRegistry 에 Sprinb Batch Job 을 자동으로 등록하기 위한 설정.
      * QuartzJobLauncher class 에서 jobLocator.getJob(jobName) 으로 job 을 찾기 위해서 필요
      */
     @Bean
@@ -51,7 +55,7 @@ public class AutowiringQuartzConfiguration {
     }
 
     @Bean
-    public SpringBeanJobFactory springBeanJobFactory() {
+    public JobFactory jobFactory() {
         AutoWiringSpringBeanJobFactory jobFactory = new AutoWiringSpringBeanJobFactory();
         log.debug("Configuring Job factory");
 
@@ -65,8 +69,9 @@ public class AutowiringQuartzConfiguration {
         schedulerFactory.setConfigLocation(new ClassPathResource("quartz.properties"));
 
         log.debug("Setting the Scheduler up");
-        schedulerFactory.setJobFactory(springBeanJobFactory());
-        schedulerFactory.setJobDetails(jobDetail);
+        schedulerFactory.setJobFactory(jobFactory());
+        // Trigger 에 jobDetail 이 연관되어있을 경우 setting 할 필요가 없다.
+        //schedulerFactory.setJobDetails(jobDetail);
         schedulerFactory.setTriggers(trigger);
 
         return schedulerFactory;
@@ -77,6 +82,8 @@ public class AutowiringQuartzConfiguration {
         JobDetailFactoryBean jobDetail = new JobDetailFactoryBean();
 
         // 실행할 Job 을 소스상에서주입
+        // SpringBeanJobFactory 가 JobClass 를 instance 로 만든다. -> bean 으로 등록하지는 않음
+        // -> AutoWiringSpringBeanJobFactory 로 대체 -> bean 으로 등록됨
         jobDetail.setJobClass(QuartzJobLauncher.class);
 
         Map map = new HashMap<String, Object>();

@@ -1,7 +1,5 @@
-package com.example.demo.hello.schedule;
+package com.example.demo.schedule;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -10,40 +8,20 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.configuration.JobLocator;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Slf4j
-public class QuartzJobLauncher extends QuartzJobBean {
+public class AutoWiringQuartzJobLauncher implements org.quartz.Job {
     private String jobName;
+
+    @Autowired
     private JobLauncher jobLauncher;
+
+    @Autowired
     private JobLocator jobLocator;
 
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
-    }
-
-    public JobLauncher getJobLauncher() {
-        return jobLauncher;
-    }
-
-    public void setJobLauncher(JobLauncher jobLauncher) {
-        this.jobLauncher = jobLauncher;
-    }
-
-    public JobLocator getJobLocator() {
-        return jobLocator;
-    }
-
-    public void setJobLocator(JobLocator jobLocator) {
-        this.jobLocator = jobLocator;
-    }
-
     @Override
-    protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             // JobRegistry 등록된 Job 을 jobName 으로 찾는다.
             Job job = jobLocator.getJob(jobName);
@@ -52,6 +30,6 @@ public class QuartzJobLauncher extends QuartzJobBean {
         } catch (Exception e) {
             log.error("Encountered job execution exception! : {}", e.getMessage());
         }
-
     }
 }
+

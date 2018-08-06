@@ -1,4 +1,4 @@
-package com.example.demo.hello;
+package com.example.demo.batch;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
-public class BatchConfiguration {
+public class BatchJobConfiguration {
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
 

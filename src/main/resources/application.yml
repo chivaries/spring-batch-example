@@ -1,6 +1,6 @@
 using:
   spring:
-    autowiring: true
+    autowiring: complete
 debug: true
 spring:
   datasource:
@@ -9,7 +9,4 @@ spring:
     password:
   batch:
     job:
-      enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
+      enabled: false
